@@ -1,28 +1,29 @@
-import React from "react";
-import styled from "styled-components";
-import OtherHeader from "../Header/OtherHeader";
-import LoginForm from "./LoginForm";
-import RegisterForm from "./RegisterForm";
-import PageHead from "../PageHead/PageHead";
 import Footer from "../Footer/Footer";
+import LoginForm from "./LoginForm";
 import NewsLetter from "../NewsLetter/NewsLetter";
-
+import OtherHeader from "../Header/OtherHeader";
+import PageHead from "../PageHead/PageHead";
+import React from "react";
+import RegisterForm from "./RegisterForm";
 import UserDetails from "./User";
+import styled from "styled-components";
+
 const Account = () => {
+
   const [user, setUser] = React.useState(true);
+
+
   return (
     <Container>
       <OtherHeader />
       <PageHead page="Account" title="My Account" />
 
-      {user ? (
-        <UserDetails />
-      ) : (
+    
         <FormHold>
           <LoginForm />
           <RegisterForm />
         </FormHold>
-      )}
+    
 
       <NewsLetter />
       <Footer />

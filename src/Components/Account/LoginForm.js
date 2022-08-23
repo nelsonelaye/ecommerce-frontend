@@ -1,8 +1,70 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import * as yup from "yup";
 
+import { Link } from "react-router-dom";
+import React from "react";
+import axios from "axios";
+import { createUser } from "./../../Global/User";
+import styled from "styled-components";
+import { useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { yupResolver } from "@hookform/resolvers/yup";
+import Swal from "sweetalert2";
+import { ScaleLoader } from "react-spinners";
 const LoginForm = () => {
+  const loading = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const formSchema = yup.object().shape({
+    email: yup.string().email().required("This field must not be empty"),
+    password: yup.string().required("This field must not be empty"),
+  });
+
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(formSchema),
+  });
+
+  const handleFormSubmit = handleSubmit(async (data) => {
+    const { email, password } = data;
+    console.log(data);
+
+    const form = new FormData();
+    form.append("email", email);
+    form.append("password", password);
+
+    const url = "http://localhost:2334/api/user/signin";
+
+    const config = {
+      headers: {
+        "content-type": "application/json",
+      },
+    };
+
+    await axios
+      .post(url, { email, password })
+      .then((res) => {
+        console.log(res);
+        dispatch(createUser(res.data.data));
+        reset();
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+          footer: '<a href="">Why do I have this issue?</a>',
+        });
+        // navigate("/")
+      })
+      .catch((err) => {
+        console.log(err.response.data.message);
+      });
+  });
+
   return (
     <Container>
       <Top>
@@ -10,21 +72,27 @@ const LoginForm = () => {
         <p>I am a returning customer</p>
       </Top>
 
-      <FormHold>
+      <FormHold onSubmit={handleFormSubmit}>
         <InputHold>
           <label>
             Email Address <span style={{ color: "red" }}>*</span>
           </label>
-          <input type="email" />
+          <input type="email" {...register("email")} />
         </InputHold>
         <InputHold>
           <label>
             Password <span style={{ color: "red" }}>*</span>
           </label>
-          <input type="password" />
+          <input type="password" {...register("password")} />
         </InputHold>
 
-        <Button type="submit">Login</Button>
+        {loading ? (
+          <Button>
+            <ScaleLoader />
+          </Button>
+        ) : (
+          <Button type="submit">Login</Button>
+        )}
         <Option>
           {" "}
           <Link to="#" style={{ textDecoration: "none", color: "inherit" }}>

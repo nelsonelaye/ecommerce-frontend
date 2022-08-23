@@ -1,7 +1,47 @@
+import * as yup from "yup"
+
 import React from "react";
+import axios from "axios"
 import styled from "styled-components";
+import {useForm} from "react-hook-form"
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import {yupResolver} from "@hookform/resolvers/yup"
 
 const RegisterForm = () => {
+const cartData = useSelector((state)=> state.cart)
+const navigate = useNavigate()
+
+  const yupSchema  = yup.object({
+    firstName:yup.string().required("firstName is required"),
+    lastName:yup.string().required("lastName is required"),
+   email:yup.string().required("fEmail is required"),
+   password:yup.string().required("fPassword is required"),
+  })
+
+  const {register, reset,handleSubmit, formState:{errors}} = useForm({
+    resolver:yupResolver(yupSchema)
+  })
+
+  const onSubmit = handleSubmit (async(value)=>{
+    console.log(value)
+
+    const {firstName,lastName, email, password}= value
+ await axios.post("http://localhost:2334/api/user",{firstName,lastName, email, password} ).then((res)=>{
+   console.log(res)
+
+   if(cartData.length>0){
+     navigate("/information")
+   }else{
+     navigate("/account")
+     alert("Registration Success. Proceed to login")
+   }
+   reset()
+ }).catch((err)=> {
+   alert(err.reponse.message)
+ })
+
+  })
   return (
     <Container>
       <Top>
@@ -14,26 +54,26 @@ const RegisterForm = () => {
         </p>
       </Top>
 
-      <FormHold>
+      <FormHold onSubmit={onSubmit}>
         <InputHold>
           <label>First Name</label>
-          <input type="text" />
+          <input type="text" {...register("firstName")} />
         </InputHold>
         <InputHold>
           <label>Last Name</label>
-          <input type="text" />
+          <input type="text"  {...register("lastName")}/>
         </InputHold>
         <InputHold>
           <label>
             Your Email Address <span style={{ color: "red" }}>*</span>
           </label>
-          <input type="email" />
+          <input type="email"{...register("email")} />
         </InputHold>
         <InputHold>
           <label>
             Your Password <span style={{ color: "red" }}>*</span>
           </label>
-          <input type="password" />
+          <input type="password" {...register("password")} />
         </InputHold>
 
         <Button type="submit">Create An Account</Button>

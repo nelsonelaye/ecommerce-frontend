@@ -1,8 +1,15 @@
-import React from "react";
-import styled from "styled-components";
-import axios from "axios";
 import Data from "./Products.json";
+import React from "react";
+import { addToCart } from "../../../Global/User";
+import axios from "axios";
+import styled from "styled-components";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 const Products = () => {
+  const dispatch = useDispatch();
+  const hist = useNavigate();
+
   const [products, setProducts] = React.useState([]);
 
   const getData = async () => {
@@ -19,9 +26,9 @@ const Products = () => {
   };
 
   React.useEffect(() => {
-    // getData();
+    getData();
     // console.log(Data);
-    setProducts(Data);
+    // setProducts(Data);
   }, []);
   return (
     <Container id="products">
@@ -36,7 +43,14 @@ const Products = () => {
               <Title>{props.title}</Title>
               <Description>{props.description}</Description>
               <Price>${props.price}</Price>
-              <Cart>Add to Cart</Cart>
+              <Cart
+                onClick={() => {
+                  dispatch(addToCart(props));
+                  hist("/cart");
+                }}
+              >
+                Add to Cart
+              </Cart>
             </Bottom>
           </Card>
         ))}
@@ -101,7 +115,8 @@ const Title = styled.div`
   margin: 10px 0px 0;
 `;
 const Description = styled.div`
-  color: #dcdcdc;
+  color: var(--grey);
+  font-size: 15px;
   margin-bottom: 10px;
 `;
 const Price = styled.div`

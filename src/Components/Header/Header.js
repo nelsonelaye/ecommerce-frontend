@@ -1,12 +1,16 @@
-import React from "react";
-import styled from "styled-components";
-import { BsCart3 } from "react-icons/bs";
 import { BiSearch, BiUser } from "react-icons/bi";
-import { HiOutlineMenuAlt3 } from "react-icons/hi";
+
+import { BsCart3 } from "react-icons/bs";
 import Button from "../Button/Button";
+import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { Link } from "react-router-dom";
+import React from "react";
 import SideNav from "./SideNav";
+import styled from "styled-components";
+import { useSelector } from "react-redux";
+
 const Header = ({ bc }) => {
+  const cartQty = useSelector((state)=> state.qty)
   const [sideMenu, setSideMenu] = React.useState(false);
 
   const displaySideMenu = () => {
@@ -59,7 +63,7 @@ const Header = ({ bc }) => {
               {" "}
               <CartHold>
                 <CartIcon bc={bc} />
-                <span>0</span>
+                <span>{cartQty}</span>
               </CartHold>
             </Link>
 

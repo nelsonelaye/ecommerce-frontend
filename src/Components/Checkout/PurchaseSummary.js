@@ -1,31 +1,39 @@
+import { useDispatch, useSelector } from "react-redux";
+
 import React from "react";
 import styled from "styled-components";
 
 const PurchaseSummary = () => {
+  const cartData = useSelector((state)=>state.cart)
+  const subTotal = useSelector((state)=>state.subTotalPrice)
+  const total = useSelector((state)=>state.totalPrice)
+
   return (
     <Container>
       <Wrap>
         <Products>
-          <Product>
+         {
+           cartData.map((props)=>(
+            <Product key={props.id}>
             <ProductInfo>
               <ProductImage>
-                <img src="/assets/pro1.png" />
-                <span>1</span>
+                <img src={props.image} alt=""/>
+                <span>{props.qty}</span>
               </ProductImage>
               <div>
-                <Name>JBL - Classic</Name>
-                <Desc>Black and white</Desc>
+`                <Desc>{props.description}</Desc>
               </div>
             </ProductInfo>
-
-            <Price>$356.00</Price>
+`            <Price>${props.price}</Price>
           </Product>
+           ))
+         }
         </Products>
 
         <Bills>
           <Bill>
             <BillName>Subtotal</BillName>
-            <Price>$356.00</Price>
+            <Price>`${subTotal}</Price>
           </Bill>
           <Bill>
             <BillName>Shipping</BillName>
@@ -46,7 +54,7 @@ const PurchaseSummary = () => {
             >
               USD
             </span>
-            $366.00
+            ${total}
           </Price>
         </Total>
       </Wrap>
@@ -94,6 +102,7 @@ const Product = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  margin-bottom:10px;
 `;
 const ProductInfo = styled.div`
   display: flex;

@@ -1,10 +1,19 @@
+import { addToCart, deleteCart, removeCart } from "../../Global/User";
+import { useDispatch, useSelector } from "react-redux";
+
 import React from "react";
 import styled from "styled-components";
 
-const CartProducts = () => {
+const CartProducts = () => { 
+const cartData = useSelector((state)=>state.cart)
+console.log(cartData)
+const dispatch = useDispatch();
+
+
   const [num, setNum] = React.useState(1);
-  const addQty = () => {
-    setNum(num + 1);
+  const addQty = () => {                                                                                                                                                               
+    setNum(num + 1);                                                                                      
+
   };
   const removeQty = () => {
     setNum(num - 1);
@@ -14,49 +23,49 @@ const CartProducts = () => {
       <Title>Products</Title>
 
       <AllProducts>
-        <ProductHold>
-          <ProductImage>
-            <img src="/assets/pro1.png" />
-          </ProductImage>
-          <ProductDetails>
-            <Name>Creepy Sneaky </Name>
-            <Desc>a short description</Desc>
-            <Price>$500.00</Price>
-            <span>Quantity</span>
+     {
+       cartData?.map((props)=>(
+        <ProductHold key={props.id}>
+        <ProductImage>
+          <img src={props.image} />
+        </ProductImage>
+        <ProductDetails>
+          <Name>{props.title} </Name>
+          <Desc>{props.description}</Desc>
+          <Price>${props.price}</Price>
+          
 
-            <QtyUpdata>
-              <QtyBox>
-                <Sign onClick={removeQty}>-</Sign>
-                <Qty>{num}</Qty>
-                <Sign onClick={addQty}>+</Sign>
-              </QtyBox>
-
-              <Remove>
-                <span>Remove</span>{" "}
-              </Remove>
-            </QtyUpdata>
-          </ProductDetails>
-        </ProductHold>
-        <ProductHold>
-          <ProductImage>
-            <img src="/assets/pro4.png" />
-          </ProductImage>
-          <ProductDetails>
-            <Name>Beat by Dre</Name>
-            <Desc>masterpiece</Desc>
-            <Price>$678.00</Price>
-            <span>Quantity</span>
+          <QtyUpdata>
             <QtyBox>
-              <Sign onClick={removeQty}>-</Sign>
-              <Qty>{num}</Qty>
-              <Sign onClick={addQty}>+</Sign>
+              <Sign 
+                 onClick={()=>{
+                  dispatch(removeCart(props))
+                }}
+              >-</Sign>
+              <Qty>{props.qty}</Qty>
+           {
+             props.quantity === props.qty  ? (
+              <Sign   style={{
+                background: "silver",
+                border: "none",
+              }}>
+                +
+              </Sign>
+             ):(
+              <Sign onClick={() =>{
+                dispatch(addToCart(props))
+              }}>+</Sign>
+             )
+           }
             </QtyBox>
 
-            <Remove>
-              <span>Remove</span>{" "}
-            </Remove>
-          </ProductDetails>
-        </ProductHold>
+       
+          </QtyUpdata>
+        </ProductDetails>
+      </ProductHold>
+     
+       ))
+     }
       </AllProducts>
       <Guarantees>
         <span>Secure Checkout Guarantee.</span>

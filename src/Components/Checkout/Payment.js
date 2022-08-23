@@ -2,11 +2,22 @@ import React from "react";
 import styled from "styled-components";
 import Head from "./Head";
 import PurchaseSummary from "./PurchaseSummary";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import { SiBitcoincash } from "react-icons/si";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteCart } from "../../Global/User";
 
 const Payment = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
+  const totalPrice = useSelector((state) => state.totalPrice);
+
+  const completeOrder = () => {
+    dispatch(deleteCart());
+    navigate("/cart");
+  };
   return (
     <Container>
       <Wrap>
@@ -18,7 +29,7 @@ const Payment = () => {
               <InnerBox>
                 <TopHold>
                   <Title>Contact</Title>
-                  <Detail>nelsonelaye@gmail.com</Detail>
+                  <Detail> {user.email}</Detail>
                 </TopHold>
 
                 <Link
@@ -32,7 +43,10 @@ const Payment = () => {
               <InnerBox>
                 <TopHold>
                   <Title>Ship to</Title>
-                  <Detail>1 Pike Street, Lagos Island, Lagos</Detail>
+                  <Detail>
+                    {" "}
+                    {user.address}, {user.city}, {user.country}
+                  </Detail>
                 </TopHold>
 
                 <Link
@@ -64,6 +78,8 @@ const Payment = () => {
                 <Note>We are not accepting payments at this time</Note>
               </PayHold>
             </Second>
+
+            <Button onClick={completeOrder}>Pay ${totalPrice}</Button>
           </Form>
 
           <Copy> &copy;All rights reserved </Copy>
@@ -212,6 +228,32 @@ const Copy = styled.div`
 
   @media screen and (max-width: 867px) {
     padding: 10px 20px;
+  }
+`;
+
+const Button = styled.button`
+  width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: white;
+  border: 1px solid var(--blue);
+  font-weight: 600;
+  border-radius: 3px;
+  font-size: 17px;
+  cursor: pointer;
+  background-color: var(--blue);
+  transition: all 350ms;
+  text-transform: capitalize;
+  :hover {
+    background-color: white;
+    border-color: var(--blue);
+    color: var(--dark-blue);
+  }
+
+  @media screen and (max-width: 867px) {
+    margin-bottom: 10px;
   }
 `;
 

@@ -1,11 +1,29 @@
+import { Link, useNavigate } from "react-router-dom";
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+// const cartData2 = useSelector((state)=>state.qty)
 const OrderSummary = () => {
+  const cartData1 = useSelector((state) => state.subTotalPrice);
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
   const [agree, setAgree] = React.useState(false);
 
   const changeAgreement = () => {
     setAgree(!agree);
+  };
+
+  const changeRoute = () => {
+    if (user) {
+      if (user.address) {
+        navigate("/payment");
+      } else {
+        navigate("/information");
+      }
+    } else {
+      navigate("/account");
+    }
   };
   return (
     <Container>
@@ -14,7 +32,7 @@ const OrderSummary = () => {
         <span>Total:</span>
         <PriceHold>
           <Circle></Circle>
-          <Price>$538.00</Price>
+          <Price>${cartData1}</Price>
         </PriceHold>
       </PriceSummary>
 
@@ -23,13 +41,13 @@ const OrderSummary = () => {
         <label htmlFor="check">I agree with the terms and conditions</label>
       </Check>
       {agree ? (
-        <Link
-          to="/information"
-          style={{ textDecoration: "none", color: "inherit" }}
-        >
-          <Button>Proceed to Checkout</Button>
-        </Link>
+        // <Link
+        //   to="/information"
+        //   style={{ textDecoration: "none", color: "inherit" }}
+        // >
+        <Button onClick={changeRoute}>Proceed to Checkout</Button>
       ) : (
+        // </Link>
         <Button style={{ backgroundColor: "rgba(236, 51, 35, .6)" }}>
           Proceed to Checkout
         </Button>

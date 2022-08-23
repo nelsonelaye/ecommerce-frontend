@@ -1,11 +1,14 @@
-import React from "react";
-import styled from "styled-components";
 import Head from "./Head";
-import PurchaseSummary from "./PurchaseSummary";
 import { Link } from "react-router-dom";
 import { MdKeyboardArrowLeft } from "react-icons/md";
+import PurchaseSummary from "./PurchaseSummary";
+import { useSelector, useDispatch } from "react-redux";
+import React from "react";
+import styled from "styled-components";
 
 const Shipping = () => {
+  const user = useSelector((state) => state.user);
+
   return (
     <Container>
       <Wrap>
@@ -17,7 +20,7 @@ const Shipping = () => {
               <InnerBox>
                 <TopHold>
                   <Title>Contact</Title>
-                  <Detail>nelsonelaye@gmail.com</Detail>
+                  <Detail>{user.email}</Detail>
                 </TopHold>
 
                 <Link
@@ -31,7 +34,9 @@ const Shipping = () => {
               <InnerBox>
                 <TopHold>
                   <Title>Ship to</Title>
-                  <Detail>1 Pike Street, Lagos Island, Lagos</Detail>
+                  <Detail>
+                    {user.address}, {user.city}, {user.country}
+                  </Detail>
                 </TopHold>
 
                 <Link
@@ -68,7 +73,12 @@ const Shipping = () => {
                   <span>Return to information</span>
                 </Link>
               </Path>
-              <Button>Continue to payment</Button>
+              <Link
+                to="/payment"
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <Button>Continue to payment</Button>
+              </Link>
             </Actions>
           </Form>
 

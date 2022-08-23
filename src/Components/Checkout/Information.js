@@ -1,18 +1,69 @@
-import React from "react";
-import styled from "styled-components";
+import * as yup from "yup";
+
 import Head from "./Head";
-import PurchaseSummary from "./PurchaseSummary";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MdKeyboardArrowLeft } from "react-icons/md";
+import PurchaseSummary from "./PurchaseSummary";
+import React from "react";
+import axios from "axios";
+import styled from "styled-components";
+import { useForm } from "react-hook-form";
+import { useSelector, useDispatch } from "react-redux";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { createUser } from "../../Global/User";
 
 const Information = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
+  const formSchema = yup.object().shape({
+    email: yup.string().email().required("This field must not be empty"),
+    country: yup.string().required("This field must not be empty"),
+    firstName: yup.string().required("This field must not be emptied"),
+    lastName: yup.string().required("This field must not be emptied"),
+    address: yup.string().required("This field must not  be emptied"),
+    city: yup.string().required("This field must not  be emptied"),
+    zipCode: yup.string().required("This field must not  be emptied"),
+  });
+
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(formSchema),
+  });
+
+  const submitForm = handleSubmit(async (value) => {
+    console.log(value);
+    const { email, country, firstName, lastName, address, city, zipCode } =
+      value;
+
+    await axios
+      .patch(`http://localhost:2334/api/user/update/${user._id}`, {
+        email,
+        country,
+        firstName,
+        lastName,
+        address,
+        city,
+        zipCode,
+      })
+      .then((res) => {
+        console.log(res);
+        dispatch(createUser(res.data.data));
+        navigate("/shipping");
+      });
+  });
+
   return (
     <Container>
       <Wrap>
         <DetailsHold>
           <Head />
-
-          <Form>
+          {/* onSumit is the default from the form */}
+          <Form onSubmit={submitForm}>
             <Subtitle>
               Contact Information{" "}
               <span>
@@ -24,7 +75,12 @@ const Information = () => {
             </Subtitle>
 
             <InputHold>
-              <input type="email" placeholder="Email or mobile phone number" />
+              <input
+                type="email"
+                placeholder={user ? user.email : "Email or mobile phone number"}
+                defaultValue={user.email}
+                {...register("email")}
+              />
             </InputHold>
 
             <Check>
@@ -35,39 +91,69 @@ const Information = () => {
             <Second>
               <Subtitle>Shipping address</Subtitle>
               <InputHold>
-                <input type="text" placeholder="Country/region" />
+                <input
+                  type="text"
+                  placeholder={user ? user.country : "Country/region"}
+                  defaultValue={user.country}
+                  {...register("country")}
+                />
               </InputHold>
 
               <DoubleHold>
                 <HalfHold>
-                  <input type="text" placeholder="First name (optional)" />
+                  <input
+                    type="text"
+                    placeholder={
+                      user ? user.firstName : "First name (optional)"
+                    }
+                    defaultValue={user.firstName}
+                    {...register("firstName")}
+                  />
                 </HalfHold>
 
                 <HalfHold>
-                  <input type="text" placeholder="Last name" />
+                  <input
+                    type="text"
+                    placeholder={user ? user.lastName : "Last name"}
+                    defaultValue={user.lastName}
+                    {...register("lastName")}
+                  />
                 </HalfHold>
               </DoubleHold>
 
               <InputHold>
-                <input type="text" placeholder="Address" />
-              </InputHold>
-
-              <InputHold>
                 <input
                   type="text"
-                  placeholder="Apartment, suite, etc.(optional)"
+                  placeholder={user ? user.address : "Address"}
+                  defaultValue={user.address}
+                  {...register("address")}
                 />
               </InputHold>
 
               <DoubleHold>
                 <ThreeHold>
-                  <input type="text" placeholder="City" />
+                  <input
+                    type="text"
+                    placeholder={user ? user.city : "City"}
+                    defaultValue={user.city}
+                    {...register("city")}
+                  />
                 </ThreeHold>
                 <ThreeHold>
-                  <input type="text" placeholder="State" />
+                  <input
+                    type="text"
+                    placeholder={user ? user.state : "State"}
+                    defaultValue={user.state}
+                    {...register("state")}
+                  />
                 </ThreeHold>
                 <ThreeHold>
-                  <input type="text" placeholder="ZIP code" />
+                  <input
+                    type="text"
+                    placeholder={user ? user.zipCode : "ZIP code"}
+                    defaultValue={user.zipCode}
+                    {...register("zipCode")}
+                  />
                 </ThreeHold>
               </DoubleHold>
 
@@ -90,12 +176,13 @@ const Information = () => {
                   <span>Return to cart</span>
                 </Link>
               </Path>
+
               <Button type="submit">Continue to shipping</Button>
             </Actions>
           </Form>
+          <Copy> &copy;All rights reserved </Copy>
         </DetailsHold>
 
-        <Copy> &copy;All rights reserved </Copy>
         <PurchaseSummary />
       </Wrap>
     </Container>
@@ -140,7 +227,7 @@ const DetailsHold = styled.div`
   }
 `;
 
-const Form = styled.div`
+const Form = styled.form`
   width: inherit;
   padding-bottom: 30px;
 

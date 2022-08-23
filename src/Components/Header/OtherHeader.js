@@ -1,14 +1,18 @@
-import React from "react";
-import styled from "styled-components";
-import { BsCart3 } from "react-icons/bs";
 import { BiSearch, BiUser } from "react-icons/bi";
+import { Link, useNavigate } from "react-router-dom";
+
 import { BsArrowLeft } from "react-icons/bs";
-import { HiOutlineMenuAlt3 } from "react-icons/hi";
+import { BsCart3 } from "react-icons/bs";
 import Button from "../Button/Button";
-import { useNavigate, Link } from "react-router-dom";
+import { HiOutlineMenuAlt3 } from "react-icons/hi";
+import React from "react";
 import SideNav from "./SideNav";
+import styled from "styled-components";
+import {useSelector} from "react-redux"
 
 const OtherHeader = () => {
+  const cartQty = useSelector((state)=> state.qty)
+
   const navigate = useNavigate();
 
   const [sideMenu, setSideMenu] = React.useState(false);
@@ -46,7 +50,7 @@ const OtherHeader = () => {
               {" "}
               <CartHold>
                 <CartIcon />
-                <span>0</span>
+                <span>{cartQty}</span>
               </CartHold>
             </Link>
 

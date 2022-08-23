@@ -1,12 +1,13 @@
-import React from "react";
-import styled from "styled-components";
+import { addToCart, removeCart } from "../../Global/User";
+import { useDispatch, useSelector } from "react-redux";
+
+import { BiCart } from "react-icons/bi";
 import { BsArrowLeftCircleFill } from "react-icons/bs";
 import { FaCircle } from "react-icons/fa";
-import { BiCart } from "react-icons/bi";
 import { Link } from "react-router-dom";
+import React from "react";
 import pic from "../../img/1.jpg";
-import { useDispatch, useSelector } from "react-redux";
-import { addToCart, removeCart } from "../../Global/actions";
+import styled from "styled-components";
 
 const Card = ({ props }) => {
   const dispatch = useDispatch();

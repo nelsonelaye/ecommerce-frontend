@@ -1,15 +1,31 @@
-import React from "react";
-import styled from "styled-components";
-import OtherHeader from "../Header/OtherHeader";
-import NewsLetter from "../NewsLetter/NewsLetter";
-import PageHead from "../PageHead/PageHead";
-import Footer from "../Footer/Footer";
-import { MdKeyboardArrowRight } from "react-icons/md";
-import { Link } from "react-router-dom";
-import OrderSummary from "./OrderSummary";
+import React, { useEffect } from "react";
+
 import CartProducts from "./CartProducts";
+import Footer from "../Footer/Footer";
+import { Link } from "react-router-dom";
+import { MdKeyboardArrowRight } from "react-icons/md";
+import NewsLetter from "../NewsLetter/NewsLetter";
+import OrderSummary from "./OrderSummary";
+import OtherHeader from "../Header/OtherHeader";
+import PageHead from "../PageHead/PageHead";
+import styled from "styled-components";
+import {useSelector} from 'react-redux'
+
 const Cart = () => {
+const cartData = useSelector((state)=>state.cart)
+
   const [empty, setEmpty] = React.useState(false);
+
+  const checkCart = ()=> {
+    if(cartData.length < 1){
+      setEmpty(true)
+        } else{
+        return
+        }
+  }
+  useEffect(()=>{
+checkCart()
+  }, [])
   return (
     <Container>
       <OtherHeader />

@@ -1,9 +1,13 @@
+import { Link, NavLink } from "react-router-dom";
+
+import { MdKeyboardArrowRight } from "react-icons/md";
 import React from "react";
 import styled from "styled-components";
-import { MdKeyboardArrowRight } from "react-icons/md";
-import { NavLink, Link } from "react-router-dom";
+import {useSelector} from "react-redux"
 
 const Head = () => {
+  const total = useSelector((state)=>state.totalPrice)
+
   return (
     <Hold>
       <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
@@ -49,7 +53,7 @@ const Head = () => {
         <InnerBox>
           <Text>Order Summary</Text>
 
-          <Price>$366.00</Price>
+          <Price>${total}.00</Price>
         </InnerBox>
       </Summary>
     </Hold>
