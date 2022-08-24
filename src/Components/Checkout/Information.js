@@ -57,6 +57,7 @@ const Information = () => {
       .then((res) => {
         console.log(res);
         dispatch(createUser(res.data.data));
+        setLoading(false);
 
         navigate("/shipping");
       })

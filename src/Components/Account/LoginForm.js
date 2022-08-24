@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { createUser } from "./../../Global/User";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -15,6 +15,7 @@ const LoginForm = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart);
 
   const formSchema = yup.object().shape({
     email: yup.string().email().required("This field must not be empty"),
@@ -53,12 +54,22 @@ const LoginForm = () => {
         console.log(res);
         dispatch(createUser(res.data.data));
         reset();
-        Swal.fire({
-          icon: "success",
-          title: "Login Successful",
-          text: "Start filling your cart!",
-        });
         setLoading(false);
+        if (cart.length > 0) {
+          Swal.fire({
+            icon: "success",
+            title: "Wop-wop!",
+            text: "Proceed to checkout",
+          });
+          navigate("/cart");
+        } else {
+          Swal.fire({
+            icon: "success",
+            title: "Incredible",
+            text: "Start filling your cart!",
+          });
+          navigate("/#products");
+        }
 
         // navigate("/")
       })
