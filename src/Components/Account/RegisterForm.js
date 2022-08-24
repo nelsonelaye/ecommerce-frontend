@@ -1,47 +1,79 @@
-import * as yup from "yup"
-
-import React from "react";
-import axios from "axios"
+import * as yup from "yup";
+import React, { useState } from "react";
+import axios from "axios";
 import styled from "styled-components";
-import {useForm} from "react-hook-form"
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import {yupResolver} from "@hookform/resolvers/yup"
+import { yupResolver } from "@hookform/resolvers/yup";
+import { ScaleLoader, ClipLoader } from "react-spinners";
+import Swal from "sweetalert2";
 
 const RegisterForm = () => {
-const cartData = useSelector((state)=> state.cart)
-const navigate = useNavigate()
+  const cartData = useSelector((state) => state.cart);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  const yupSchema  = yup.object({
-    firstName:yup.string().required("firstName is required"),
-    lastName:yup.string().required("lastName is required"),
-   email:yup.string().required("fEmail is required"),
-   password:yup.string().required("fPassword is required"),
-  })
+  const yupSchema = yup.object({
+    firstName: yup.string().required("firstName is required"),
+    lastName: yup.string().required("lastName is required"),
+    email: yup.string().required("fEmail is required"),
+    password: yup.string().required("fPassword is required"),
+  });
 
-  const {register, reset,handleSubmit, formState:{errors}} = useForm({
-    resolver:yupResolver(yupSchema)
-  })
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(yupSchema),
+  });
 
-  const onSubmit = handleSubmit (async(value)=>{
-    console.log(value)
+  const onSubmit = handleSubmit(async (value) => {
+    console.log(value);
+    const { firstName, lastName, email, password } = value;
 
-    const {firstName,lastName, email, password}= value
- await axios.post("http://localhost:2334/api/user",{firstName,lastName, email, password} ).then((res)=>{
-   console.log(res)
+    setLoading(true);
+    await axios
+      .post("http://localhost:2334/api/user", {
+        firstName,
+        lastName,
+        email,
+        password,
+      })
+      .then((res) => {
+        console.log(res);
+        setLoading(false);
 
-   if(cartData.length>0){
-     navigate("/information")
-   }else{
-     navigate("/account")
-     alert("Registration Success. Proceed to login")
-   }
-   reset()
- }).catch((err)=> {
-   alert(err.reponse.message)
- })
-
-  })
+        if (cartData.length > 0) {
+          reset();
+          Swal.fire({
+            icon: "success",
+            title: "Successful",
+            text: "Proceed to checkout",
+          });
+          navigate("/information");
+        } else {
+          reset();
+          Swal.fire({
+            icon: "success",
+            title: "Successful",
+            text: "Proceed to login",
+          });
+          navigate("/account");
+        }
+      })
+      .catch((err) => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: err.response.data.message,
+          footer: "Please try again",
+        });
+        setLoading(false);
+      });
+  });
   return (
     <Container>
       <Top>
@@ -61,13 +93,13 @@ const navigate = useNavigate()
         </InputHold>
         <InputHold>
           <label>Last Name</label>
-          <input type="text"  {...register("lastName")}/>
+          <input type="text" {...register("lastName")} />
         </InputHold>
         <InputHold>
           <label>
             Your Email Address <span style={{ color: "red" }}>*</span>
           </label>
-          <input type="email"{...register("email")} />
+          <input type="email" {...register("email")} />
         </InputHold>
         <InputHold>
           <label>
@@ -75,8 +107,13 @@ const navigate = useNavigate()
           </label>
           <input type="password" {...register("password")} />
         </InputHold>
-
-        <Button type="submit">Create An Account</Button>
+        {loading ? (
+          <Button style={{ bakcgroundColor: "" }}>
+            <ClipLoader color="var(--dark-blue)" size="15px" />
+          </Button>
+        ) : (
+          <Button type="submit">Create An Account</Button>
+        )}
       </FormHold>
     </Container>
   );

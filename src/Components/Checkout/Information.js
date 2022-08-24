@@ -1,21 +1,24 @@
 import * as yup from "yup";
-
 import Head from "./Head";
 import { Link, useNavigate } from "react-router-dom";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import PurchaseSummary from "./PurchaseSummary";
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { createUser } from "../../Global/User";
+import { ScaleLoader, ClipLoader } from "react-spinners";
+import Swal from "sweetalert2";
 
 const Information = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
+  const [loading, setLoading] = useState(false);
+
   const formSchema = yup.object().shape({
     email: yup.string().email().required("This field must not be empty"),
     country: yup.string().required("This field must not be empty"),
@@ -40,6 +43,7 @@ const Information = () => {
     const { email, country, firstName, lastName, address, city, zipCode } =
       value;
 
+    setLoading(true);
     await axios
       .patch(`http://localhost:2334/api/user/update/${user._id}`, {
         email,
@@ -53,7 +57,18 @@ const Information = () => {
       .then((res) => {
         console.log(res);
         dispatch(createUser(res.data.data));
+
         navigate("/shipping");
+      })
+      .catch((err) => {
+        console.log(err);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: err.response.data.message,
+          footer: "Please try again",
+        });
+        setLoading(false);
       });
   });
 
@@ -177,7 +192,13 @@ const Information = () => {
                 </Link>
               </Path>
 
-              <Button type="submit">Continue to shipping</Button>
+              {loading ? (
+                <Button style={{ bakcgroundColor: "" }}>
+                  <ClipLoader color="var(--dark-blue)" size="15px" />
+                </Button>
+              ) : (
+                <Button type="submit">Continue to shipping</Button>
+              )}
             </Actions>
           </Form>
           <Copy> &copy;All rights reserved </Copy>

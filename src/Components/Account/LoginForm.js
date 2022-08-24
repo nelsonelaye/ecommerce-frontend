@@ -1,7 +1,7 @@
 import * as yup from "yup";
 
 import { Link } from "react-router-dom";
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { createUser } from "./../../Global/User";
 import styled from "styled-components";
@@ -10,9 +10,9 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Swal from "sweetalert2";
-import { ScaleLoader } from "react-spinners";
+import { ScaleLoader, ClipLoader } from "react-spinners";
 const LoginForm = () => {
-  const loading = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -46,6 +46,7 @@ const LoginForm = () => {
       },
     };
 
+    setLoading(true);
     await axios
       .post(url, { email, password })
       .then((res) => {
@@ -53,15 +54,23 @@ const LoginForm = () => {
         dispatch(createUser(res.data.data));
         reset();
         Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Something went wrong!",
-          footer: '<a href="">Why do I have this issue?</a>',
+          icon: "success",
+          title: "Login Successful",
+          text: "Start filling your cart!",
         });
+        setLoading(false);
+
         // navigate("/")
       })
       .catch((err) => {
         console.log(err.response.data.message);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: err.response.data.message,
+          footer: "Try Again",
+        });
+        setLoading(false);
       });
   });
 
@@ -87,8 +96,8 @@ const LoginForm = () => {
         </InputHold>
 
         {loading ? (
-          <Button>
-            <ScaleLoader />
+          <Button style={{ bakcgroundColor: "" }}>
+            <ClipLoader color="var(--dark-blue)" size="15px" />
           </Button>
         ) : (
           <Button type="submit">Login</Button>
