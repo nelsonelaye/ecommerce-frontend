@@ -1,4 +1,3 @@
-import Data from "./Products.json";
 import React from "react";
 import { addToCart } from "../../../Global/User";
 import axios from "axios";
