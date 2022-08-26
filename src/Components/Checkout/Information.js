@@ -43,9 +43,12 @@ const Information = () => {
     const { email, country, firstName, lastName, address, city, zipCode } =
       value;
 
+    const liveURL = "https://soun-backend.vercel.app";
+    const url = `${liveURL}/api/user/update/${user._id}`;
+
     setLoading(true);
     await axios
-      .patch(`http://localhost:2334/api/user/update/${user._id}`, {
+      .patch(url, {
         email,
         country,
         firstName,

@@ -33,10 +33,12 @@ const RegisterForm = () => {
   const onSubmit = handleSubmit(async (value) => {
     console.log(value);
     const { firstName, lastName, email, password } = value;
+    const liveURL = "https://soun-backend.vercel.app";
+    const url = `${liveURL}/api/user`;
 
     setLoading(true);
     await axios
-      .post("http://localhost:2334/api/user", {
+      .post(url, {
         firstName,
         lastName,
         email,

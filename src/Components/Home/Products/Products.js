@@ -13,7 +13,11 @@ const Products = () => {
   const [products, setProducts] = React.useState([]);
 
   const getData = async () => {
-    const url = "http://localhost:2334/api/product";
+    const liveURL = "https://soun-backend.vercel.app";
+    const url = `${liveURL}/api/product`;
+
+    // const url = "http://localhost:2334/api/product";
+
     await axios
       .get(url)
       .then((res) => {

@@ -39,7 +39,9 @@ const LoginForm = () => {
     form.append("email", email);
     form.append("password", password);
 
-    const url = "http://localhost:2334/api/user/signin";
+    const liveURL = "https://soun-backend.vercel.app";
+    const url = `${liveURL}/api/user/signin`;
+    // const url = "http://localhost:2334/api/user/signin";
 
     const config = {
       headers: {
