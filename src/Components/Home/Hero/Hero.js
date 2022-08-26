@@ -7,7 +7,7 @@ const Hero = () => {
     <Container>
       <Bg></Bg>
       <Hold>
-        <span>Phasellus lorem malesuada ligula pulvinar commodo maecenas</span>
+        <span>The best products in the market</span>
         <Title>Hear Whatever you need</Title>
         <a
           href="#products"

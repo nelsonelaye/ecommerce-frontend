@@ -35,6 +35,7 @@ const Products = () => {
   }, []);
   return (
     <Container id="products">
+      <Headline>Products</Headline>
       <Wrapper>
         {products?.map((props) => (
           <Card key={props._id}>
@@ -72,6 +73,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   background-color: white;
+  flex-direction: column;
   padding: 50px 0;
 `;
 
@@ -83,6 +85,13 @@ const Wrapper = styled.div`
   justify-content: center;
   flex-wrap: wrap;
 `;
+
+const Headline = styled.div`
+  font-size: 45px;
+  color: var(--dark-blue);
+  font-weight: 500;
+`;
+
 const Card = styled.div`
   width: 280px;
   height: 400px;

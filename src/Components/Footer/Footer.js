@@ -93,9 +93,10 @@ const Navigations = styled.div`
   flex-wrap: wrap;
   align-items: center;
   // justify-content: space-between;
-
   @media screen and (max-width: 1000px) {
+    justify-content: center;
     margin-bottom: 20px;
+    width: 100%;
   }
 `;
 const Nav = styled.div`
@@ -108,6 +109,11 @@ const Nav = styled.div`
 const Logos = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+
+  @media screen and (max-width: 1000px) {
+    justify-content: center;
+  }
 `;
 const BrandLogo = styled.img`
   width: 50px;
