@@ -39,6 +39,10 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
+
+  @media screen and (max-width: 468px) {
+    min-height: 40vh;
+  }
 `;
 const Wrap = styled.div`
   color: white;
@@ -57,6 +61,9 @@ const Title = styled.div`
 
   @media screen and (max-width: 768px) {
     font-size: 40px;
+  }
+  @media screen and (max-width: 468px) {
+    font-size: 32px;
   }
 `;
 const Form = styled.form`
