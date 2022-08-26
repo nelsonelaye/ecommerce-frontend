@@ -43,12 +43,12 @@ const Container = styled.div`
   height: 100vh;
   width: 100%;
   position: relative;
-  background-color: rgba(0, 0, 0, 0.25);
+  // background-color: rgba(0, 0, 0, 0.25);
   @media screen and (max-width: 1150px) {
     height: 100%;
     min-height: 100vh;
     flex-direction: column;
-    justify-content: center;
+    // justify-content: center;
   }
 `;
 const Hold = styled.div`
