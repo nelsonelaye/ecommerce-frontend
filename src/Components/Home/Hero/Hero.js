@@ -37,6 +37,7 @@ const Bg = styled.div`
 const Container = styled.div`
   display: flex;
   align-items: center;
+  // align-items: center;
   cursor: pointer;
   box-sizing: border-box;
   height: 100vh;
@@ -47,6 +48,7 @@ const Container = styled.div`
     height: 100%;
     min-height: 100vh;
     flex-direction: column;
+    justify-content: center;
   }
 `;
 const Hold = styled.div`
@@ -69,6 +71,7 @@ const Hold = styled.div`
     justify-content: center;
     flex-direction: column;
     width: 90%;
+    padding-left: 0;
   }
 `;
 const Title = styled.div`
