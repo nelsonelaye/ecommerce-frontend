@@ -41,7 +41,7 @@ const Container = styled.div`
   box-sizing: border-box;
 
   @media screen and (max-width: 468px) {
-    min-height: 40vh;
+    min-height: 50vh;
   }
 `;
 const Wrap = styled.div`
