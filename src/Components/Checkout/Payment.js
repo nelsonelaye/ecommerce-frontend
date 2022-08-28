@@ -7,7 +7,7 @@ import { MdKeyboardArrowLeft } from "react-icons/md";
 import { SiBitcoincash } from "react-icons/si";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteCart } from "../../Global/User";
-
+import Swal from "sweetalert2";
 const Payment = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -16,6 +16,11 @@ const Payment = () => {
 
   const completeOrder = () => {
     dispatch(deleteCart());
+    Swal.fire({
+      icon: "success",
+      title: "Incredible!",
+      text: "This is a practice site and no real purchase is made. Thanks for testing it out. You are amazing.",
+    });
     navigate("/cart");
   };
   return (

@@ -48,23 +48,23 @@ const RegisterForm = () => {
         console.log(res);
         setLoading(false);
 
-        if (cartData.length > 0) {
-          reset();
-          Swal.fire({
-            icon: "success",
-            title: "Successful",
-            text: "Proceed to checkout",
-          });
-          navigate("/information");
-        } else {
-          reset();
-          Swal.fire({
-            icon: "success",
-            title: "Successful",
-            text: "Proceed to login",
-          });
-          navigate("/account");
-        }
+        // if (cartData.length > 0) {
+        //   reset();
+        //   Swal.fire({
+        //     icon: "success",
+        //     title: "Successful",
+        //     text: "Proceed to checkout",
+        //   });
+        //   navigate("/information");
+        // } else {
+        reset();
+        Swal.fire({
+          icon: "success",
+          title: "Successful",
+          text: "Proceed to login",
+        });
+        navigate("/account");
+        // }
       })
       .catch((err) => {
         Swal.fire({

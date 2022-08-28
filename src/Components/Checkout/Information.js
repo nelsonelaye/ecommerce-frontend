@@ -112,7 +112,7 @@ const Information = () => {
               <InputHold>
                 <input
                   type="text"
-                  placeholder={user ? user.country : "Country/region"}
+                  placeholder={user.country ? user.country : "Country/region"}
                   defaultValue={user.country}
                   {...register("country")}
                 />
@@ -143,7 +143,7 @@ const Information = () => {
               <InputHold>
                 <input
                   type="text"
-                  placeholder={user ? user.address : "Address"}
+                  placeholder={user.address ? user.address : "Address"}
                   defaultValue={user.address}
                   {...register("address")}
                 />
@@ -153,7 +153,7 @@ const Information = () => {
                 <ThreeHold>
                   <input
                     type="text"
-                    placeholder={user ? user.city : "City"}
+                    placeholder={user.city ? user.city : "City"}
                     defaultValue={user.city}
                     {...register("city")}
                   />
@@ -161,7 +161,7 @@ const Information = () => {
                 <ThreeHold>
                   <input
                     type="text"
-                    placeholder={user ? user.state : "State"}
+                    placeholder={user.state ? user.state : "State"}
                     defaultValue={user.state}
                     {...register("state")}
                   />
@@ -169,7 +169,7 @@ const Information = () => {
                 <ThreeHold>
                   <input
                     type="text"
-                    placeholder={user ? user.zipCode : "ZIP code"}
+                    placeholder={user.zipCode ? user.zipCode : "ZIP code"}
                     defaultValue={user.zipCode}
                     {...register("zipCode")}
                   />
